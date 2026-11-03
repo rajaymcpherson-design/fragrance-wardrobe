@@ -33,6 +33,18 @@ const pickDiv = document.getElementById("pick");
 pickButton.addEventListener("click", function() {
 const chosenOccasion = document.getElementById("occasion").value;
 const chosenMood = document.getElementById("mood").value;
-pickDiv.textContent = "You picked: " + chosenOccasion + " / " + chosenMood;
+const keywords = {
+  "Date night": "date night",
+  "Work or Office": "office",
+  "Club or Night out": "club",
+  "Everyday": "everyday",
+  "Formal event": "formal"
+};
+const keyword = keywords[chosenOccasion];
+const matches = fragrances.filter(function(fragrance) {
+  return fragrance.occasion.toLowerCase().includes(keyword);
+});
+const pick = matches[0] || fragrances[2];
+pickDiv.textContent = "For " + chosenOccasion + " (" + chosenMood + "), try " + pick.name + " by " + pick.brand + " — " + pick.season + ".";
 });
 console.log("app.js is connected");
