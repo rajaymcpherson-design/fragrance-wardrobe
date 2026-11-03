@@ -10,12 +10,22 @@ const fragrances = [
  const container = document.getElementById("wardrobe");
  fragrances.forEach(function(fragrance) {
  const card = document.createElement("div");
- card.textContent = fragrance.name;
+ card.className = "card";
+const nameElement = document.createElement("h3");
+nameElement.textContent = fragrance.name;
+card.appendChild(nameElement);
+const brandElement = document.createElement("p");
+brandElement.textContent = "Brand: " + fragrance.brand;
+card.appendChild(brandElement);
+const seasonElement = document.createElement("p");
+seasonElement.textContent = "Season: " + fragrance.season;
+card.appendChild(seasonElement);
+const occasionElement = document.createElement("p");
+occasionElement.textContent = "Occasion: " + fragrance.occasion;
+card.appendChild(occasionElement);
+const typeElement = document.createElement("p");
+typeElement.textContent = "Type: " + fragrance.type;
+card.appendChild(typeElement);
 container.appendChild(card);
 });
-
-
-
-
-
 console.log("app.js is connected");
