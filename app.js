@@ -28,4 +28,11 @@ typeElement.textContent = "Type: " + fragrance.type;
 card.appendChild(typeElement);
 container.appendChild(card);
 });
+const pickButton = document.getElementById("get-pick");
+const pickDiv = document.getElementById("pick");
+pickButton.addEventListener("click", function() {
+const chosenOccasion = document.getElementById("occasion").value;
+const chosenMood = document.getElementById("mood").value;
+pickDiv.textContent = "You picked: " + chosenOccasion + " / " + chosenMood;
+});
 console.log("app.js is connected");
