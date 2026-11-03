@@ -44,17 +44,26 @@ const keyword = keywords[chosenOccasion];
 const matches = fragrances.filter(function(fragrance) {
   return fragrance.occasion.toLowerCase().includes(keyword);
 });
-const pick = matches[0] || fragrances[2];
+const weatherMatches = currentTemp === null ? matches : matches.filter(function(fragrance) {
+  if (currentTemp < 70) {
+    return fragrance.season.includes("fall");
+  } else {
+    return fragrance.season.includes("spring");
+  }
+});
+const pick = weatherMatches[0] || matches[0] || fragrances[2];
+
 pickDiv.textContent = "For " + chosenOccasion + " (" + chosenMood + "), try " + pick.name + " by " + pick.brand + " — " + pick.season + ".";
 });
 console.log("app.js is connected");
 const weatherDiv = document.getElementById("weather");
-
+let currentTemp = null;
 fetch("https://api.open-meteo.com/v1/forecast?latitude=34.6&longitude=-98.4&current=temperature_2m,weather_code&temperature_unit=fahrenheit")
   .then(function(response) {
     return response.json();
   })
   .then(function(data) {
     const temp = data.current.temperature_2m;
+    currentTemp = temp;
     weatherDiv.textContent = "Lawton weather: " + temp + "°F";
   });
