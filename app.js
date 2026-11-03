@@ -48,3 +48,13 @@ const pick = matches[0] || fragrances[2];
 pickDiv.textContent = "For " + chosenOccasion + " (" + chosenMood + "), try " + pick.name + " by " + pick.brand + " — " + pick.season + ".";
 });
 console.log("app.js is connected");
+const weatherDiv = document.getElementById("weather");
+
+fetch("https://api.open-meteo.com/v1/forecast?latitude=34.6&longitude=-98.4&current=temperature_2m,weather_code&temperature_unit=fahrenheit")
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    const temp = data.current.temperature_2m;
+    weatherDiv.textContent = "Lawton weather: " + temp + "°F";
+  });
