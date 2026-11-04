@@ -1,10 +1,10 @@
 const fragrances = [
-     { name: "Naxos" , brand: "Xerjoff" , season: "fall and winter" , occasion: "evening wear, formal events, date nights" , type: "Eau de Parfum (EDP)" },
-     { name: "Aventus" , brand: "Creed" , season: "spring and summer" , occasion: "business meetings, office wear, daytime events, casual luxury and a confident night out or formal event" , type: "Eau de Parfum (EDP)" },
-     { name: "Imagination" , brand: "Louis Vuitton" , season: "spring, summer, fall and winter" , occasion: "everyday signature scent, gym, office-safe fragrance, daytime events, casual outings or formal summer nights" , type: "Eau de Parfum (EDP)" },
-     { name: "Layton" , brand: "Parfums de Marly" , season: "fall and winter" , occasion: "date nights, evening wear, parties, and cold-weather everyday use" , type: "Eau de Parfum (EDP)" },
-     { name: "Angels' Share" , brand: " Kilian" , season: "fall and winter" , occasion: "date nights, evening wear, holiday parties, formal winter events and festive settings" , type: "Eau de Parfum (EDP)" },
-     { name: "Side Effect" , brand: "Initio Parfums Prives" , season: "fall and winter" , occasion: "night outings, date nights, clubbing, upscale evening events, and formal winter parties" , type: "Eau de Parfum (EDP)" }, 
+     { name: "Naxos" , brand: "Xerjoff" , season: "fall and winter" , occasion: "evening wear, formal events, date nights" , type: "Eau de Parfum (EDP)", sillage: 85, longevity: 85, spring: 40, summer: 20, fall: 100, winter: 100 },
+     { name: "Aventus" , brand: "Creed" , season: "spring and summer" , occasion: "business meetings, office wear, daytime events, casual luxury and a confident night out or formal event" , type: "Eau de Parfum (EDP)", sillage: 70, longevity: 80, spring: 90, summer: 90, fall: 60, winter: 40 },
+     { name: "Imagination" , brand: "Louis Vuitton" , season: "spring, summer, fall and winter" , occasion: "everyday signature scent, gym, office-safe fragrance, daytime events, casual outings or formal summer nights" , type: "Eau de Parfum (EDP)", sillage: 60, longevity: 70, spring: 90, summer: 90, fall: 80, winter: 60 },
+     { name: "Layton" , brand: "Parfums de Marly" , season: "fall and winter" , occasion: "date nights, evening wear, parties, and cold-weather everyday use" , type: "Eau de Parfum (EDP)", sillage: 80, longevity: 90, spring: 60, summer: 40, fall: 100, winter: 90 },
+     { name: "Angels' Share" , brand: " Kilian" , season: "fall and winter" , occasion: "date nights, evening wear, holiday parties, formal winter events and festive settings" , type: "Eau de Parfum (EDP)", sillage: 80, longevity: 90, spring: 50, summer: 30, fall: 100, winter: 100 },
+     { name: "Side Effect" , brand: "Initio Parfums Prives" , season: "fall and winter" , occasion: "night outings, date nights, clubbing, upscale evening events, and formal winter parties" , type: "Eau de Parfum (EDP)", sillage: 90, longevity: 95, spring: 40, summer: 20, fall: 100, winter: 100 }, 
 
 ];
  const container = document.getElementById("wardrobe");
@@ -26,6 +26,31 @@ card.appendChild(occasionElement);
 const typeElement = document.createElement("p");
 typeElement.textContent = "Type: " + fragrance.type;
 card.appendChild(typeElement);
+const sillageLabel = document.createElement("p");
+sillageLabel.textContent = "Sillage";
+card.appendChild(sillageLabel);
+const sillageBar = document.createElement("div");
+sillageBar.className = "bar";
+const sillageFill = document.createElement("div");
+sillageFill.className = "bar-fill";
+sillageFill.style.width = fragrance.sillage + "%";
+sillageBar.appendChild(sillageFill);
+card.appendChild(sillageBar);
+
+const longevityLabel = document.createElement("p");
+longevityLabel.textContent = "Longevity";
+card.appendChild(longevityLabel);
+const longevityBar = document.createElement("div");
+longevityBar.className = "bar";
+const longevityFill = document.createElement("div");
+longevityFill.className = "bar-fill";
+longevityFill.style.width = fragrance.longevity + "%";
+longevityBar.appendChild(longevityFill);
+card.appendChild(longevityBar);
+
+const seasonLabel = document.createElement("p");
+seasonLabel.textContent = "Spring " + fragrance.spring + " | Summer " + fragrance.summer + " | Fall " + fragrance.fall + " | Winter " + fragrance.winter;
+card.appendChild(seasonLabel);
 container.appendChild(card);
 });
 const pickButton = document.getElementById("get-pick");
@@ -63,7 +88,8 @@ if (typeof API_KEY === "undefined" || API_KEY === "YOUR_API_KEY_HERE") {
   const askText = document.getElementById("ask").value;
 const tempText = currentTemp === null ? "unknown" : currentTemp + " degrees Fahrenheit";
 const askPart = askText === "" ? "No extra question." : "User also asked: " + askText + " Answer this at the end.";
-const aiPrompt = "You are Fragrance Coach. Weather is " + tempText + ". Occasion is " + chosenOccasion + ". Mood is " + chosenMood + ". Wardrobe, pick only from these: Naxos by Xerjoff, Aventus by Creed, Imagination by Louis Vuitton, Layton by Parfums de Marly, Angels' Share by Kilian, Side Effect by Initio Parfums Prives. " + askPart + "Answer in this format, with each section on its own line and a blank line between sections: Reasoning Step 1 Weather, Step 2 Occasion and mood, Step 3 Wardrobe match. Main pick: name and why in 2-3 sentences. Layering: layer the main pick with one other fragrance from the list, why the notes work together, and spray counts in order."
+const aiPrompt = "You are Fragrance Coach. Weather is " + tempText + ". Occasion is " + chosenOccasion + ". Mood is " + chosenMood + ". Wardrobe, pick only from these: Naxos by Xerjoff, Aventus by Creed, Imagination by Louis Vuitton, Layton by Parfums de Marly, Angels' Share by Kilian, Side Effect by Initio Parfums Prives. " + askPart + "Answer in this format, with each section on its own line and a blank line between sections: Reasoning: in 2-3 sentences, why this pick fits the weather, the occasion, and the mood. Main pick: name and why in 2-3 sentences. Layering: layer the main pick with one other fragrance from the list, why the notes work together, and spray counts in order."
+
 ;
   fetch("https://api.meta.ai/v1/chat/completions", {
     method: "POST",

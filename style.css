@@ -123,3 +123,112 @@ body.dark #pick {
 body.dark #ai-pick {
   background-color: #222222;
 }
+body {
+  background: linear-gradient(180deg, #1a1200 0%, #121212 40%, #0a0a0a 100%);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+h1 {
+  font-size: 42px;
+  background: linear-gradient(90deg, #ffd700, #ff8c00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  border: none;
+}
+
+#wardrobe {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.card {
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  border: 1px solid #444444;
+  border-top: 4px solid #d4af37;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(212, 175, 55, 0.25);
+}
+
+#pick {
+  background: linear-gradient(90deg, #ffd700, #ffaa00);
+  color: #111111;
+  box-shadow: 0 8px 24px rgba(255, 170, 0, 0.3);
+}
+
+button {
+  border-radius: 999px;
+  padding: 12px 22px;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card, #pick, #ai-pick {
+  animation: fadeIn 0.5s ease;
+}
+.bar {
+  background-color: #333333;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 4px 0 10px 0;
+}
+
+.bar-fill {
+  background: linear-gradient(90deg, #ffd700, #ff8c00);
+  height: 100%;
+}
+/* Readability fix - light mode */
+body {
+  color: #111111;
+}
+
+#pick {
+  color: #111111;
+}
+
+#ai-pick {
+  background-color: #f9f9f9;
+  color: #111111;
+}
+
+.card {
+  background: #ffffff;
+  color: #111111;
+  border-top: 4px solid #d4af37;
+}
+
+/* Readability fix - dark mode */
+body.dark {
+  color: #f0f0f0;
+}
+
+body.dark #pick {
+  background: linear-gradient(90deg, #ffd700, #ffaa00);
+  color: #111111;
+}
+
+body.dark #ai-pick {
+  background-color: #222222;
+  color: #f0f0f0;
+}
+
+body.dark .card {
+  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+  color: #f0f0f0;
+}
+
+body.dark .intro {
+  color: #cccccc;
+}
