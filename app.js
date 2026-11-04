@@ -55,7 +55,7 @@ const weatherMatches = currentTemp === null ? matches : matches.filter(function(
 const pick = weatherMatches[0] || matches[0] || fragrances[2];
 
 pickDiv.textContent = "For " + chosenOccasion + " (" + chosenMood + "), try " + pick.name + " by " + pick.brand + " — " + pick.season + ".";
-if (API_KEY === "YOUR_API_KEY_HERE") {
+if (typeof API_KEY === "undefined" || API_KEY === "YOUR_API_KEY_HERE") {
   aiDiv.textContent = "AI key not set, showing rules pick only.";
 } else {
   aiDiv.textContent = "Thinking...";
