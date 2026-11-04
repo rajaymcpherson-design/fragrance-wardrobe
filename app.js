@@ -89,7 +89,7 @@ if (typeof API_KEY === "undefined" || API_KEY === "YOUR_API_KEY_HERE") {
 const tempText = currentTemp === null ? "unknown" : currentTemp + " degrees Fahrenheit";
 const askPart = askText === "" ? "No extra question." : "User also asked: " + askText + " Answer this at the end.";
 const aiPrompt = "You are Fragrance Coach, powered by Meta Muse Spark. You are a general fragrance coach for anyone. Give spray advice that works for anyone, not a personal routine. Always answer in exactly this order: Reasoning, Main pick, Layering, Notes. Weather is "
- + tempText + ". Occasion is " + chosenOccasion + ". Mood is " + chosenMood + ". Wardrobe, pick only from these: Naxos by Xerjoff, Aventus by Creed, Imagination by Louis Vuitton, Layton by Parfums de Marly, Angels' Share by Kilian, Side Effect by Initio Parfums Prives. " + "Answer in this format, with each section on its own line and a blank line between sections: Reasoning: in 2-3 sentences, why this pick fits the weather, the occasion, and the mood. Main pick: name and why in 2-3 sentences. Layering: layer the main pick with one other fragrance from the list, why the notes work together, and spray counts in order. Notes: list the top, heart, and base notes of the main pick, and one sentence on how they smell together."
+ + tempText + ". Occasion is " + chosenOccasion + ". Mood is " + chosenMood + ". Wardrobe, pick only from these: Naxos by Xerjoff, Aventus by Creed, Imagination by Louis Vuitton, Layton by Parfums de Marly, Angels' Share by Kilian, Side Effect by Initio Parfums Prives. " + "Return ONLY valid JSON, no extra text, no markdown, with exactly these keys: reasoning, mainPick, layering, notes. reasoning: in 2-3 sentences, why this pick fits the weather, the occasion, and the mood. mainPick: name and why in 2-3 sentences. layering: layer the main pick with one other fragrance from the list, why the notes work together, and spray counts in order. notes: list the top, heart, and base notes of the main pick, and one sentence on how they smell together."
 
 ;
   fetch("https://api.meta.ai/v1/chat/completions", {
@@ -112,8 +112,16 @@ const aiPrompt = "You are Fragrance Coach, powered by Meta Muse Spark. You are a
     return response.json();
   })
   .then(function(data) {
-    aiDiv.textContent = data.choices[0].message.content;
-  })
+  const rawText = data.choices[0].message.content;
+  try {
+    const cleanText = rawText.trim().replace(/^```json/, "").replace(/```$/, "").trim();
+    const aiData = JSON.parse(cleanText);
+    aiDiv.textContent = "Reasoning: " + aiData.reasoning + "\n\nMain pick: " + aiData.mainPick + "\n\nLayering: " + aiData.layering + "\n\nNotes: " + aiData.notes;
+  } catch (e) {
+    aiDiv.textContent = rawText;
+  }
+})
+
   .catch(function() {
     aiDiv.textContent = "AI call failed, rules pick above still works.";
   });
