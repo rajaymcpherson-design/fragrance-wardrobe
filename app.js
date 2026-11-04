@@ -196,6 +196,7 @@ askButton.addEventListener("click", function() {
     return;
   }
   askAnswerDiv.textContent = "Thinking...";
+  const weatherPart = (typeof currentTemp !== "undefined" && currentTemp !== null) ? "The user's current weather is " + currentTemp + " degrees Fahrenheit. " : "";
   fetch("https://api.meta.ai/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -207,7 +208,7 @@ askButton.addEventListener("click", function() {
       messages: [
         {
           role: "user",
-          content: "You are Fragrance Coach, powered by Meta Muse Spark. Answer this fragrance question in 2-3 sentences: " + askText
+          content: "You are Fragrance Coach, powered by Meta Muse Spark. " + weatherPart + "Answer this fragrance question in 2-3 sentences, using the current weather when it matters: " + askText
         }
       ]
     })
