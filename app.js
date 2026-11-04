@@ -89,12 +89,26 @@ if (API_KEY === "YOUR_API_KEY_HERE") {
 console.log("app.js is connected");
 const weatherDiv = document.getElementById("weather");
 let currentTemp = null;
-fetch("https://api.open-meteo.com/v1/forecast?latitude=34.6&longitude=-98.4&current=temperature_2m,weather_code&temperature_unit=fahrenheit")
-  .then(function(response) {
-    return response.json();
-  })
-  .then(function(data) {
-    const temp = data.current.temperature_2m;
-    currentTemp = temp;
-    weatherDiv.textContent = "Lawton weather: " + temp + "°F";
+
+function fetchWeather(lat, lon, label) {
+  fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current=temperature_2m,weather_code&temperature_unit=fahrenheit")
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      const temp = data.current.temperature_2m;
+      currentTemp = temp;
+      weatherDiv.textContent = label + " weather: " + temp + "°F";
+    });
+}
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    fetchWeather(position.coords.latitude, position.coords.longitude, "Your location");
+  }, function() {
+    fetchWeather(34.6, -98.4, "Lawton");
   });
+} else {
+  fetchWeather(34.6, -98.4, "Lawton");
+}
+
