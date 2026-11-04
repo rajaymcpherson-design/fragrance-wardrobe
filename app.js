@@ -193,7 +193,7 @@ darkButton.addEventListener("click", function() {
 });
 const askButton = document.getElementById("ask-button");
 const askAnswerDiv = document.getElementById("ask-answer");
-
+let askHistory = [];
 askButton.addEventListener("click", function() {
   if (typeof API_KEY === "undefined" || API_KEY === "YOUR_API_KEY_HERE") {
     askAnswerDiv.textContent = "AI key not set, ask needs the local key.";
@@ -206,6 +206,8 @@ askButton.addEventListener("click", function() {
   }
   askAnswerDiv.textContent = "Thinking...";
   const weatherPart = (typeof currentTemp !== "undefined" && currentTemp !== null) ? "The user's current weather is " + currentTemp + " degrees Fahrenheit. " : "";
+  const askMessages = askHistory.slice();
+askMessages.push({ role: "user", content: "You are Fragrance Coach, powered by Meta Muse Spark. " + weatherPart + "Answer this fragrance question in 2-3 sentences, using the current weather when it matters: " + askText });
   fetch("https://api.meta.ai/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -214,12 +216,7 @@ askButton.addEventListener("click", function() {
     },
     body: JSON.stringify({
       model: "muse-spark-1.3",
-      messages: [
-        {
-          role: "user",
-          content: "You are Fragrance Coach, powered by Meta Muse Spark. " + weatherPart + "Answer this fragrance question in 2-3 sentences, using the current weather when it matters: " + askText
-        }
-      ]
+      messages: askMessages,
     })
   })
   .then(function(response) {
@@ -227,6 +224,12 @@ askButton.addEventListener("click", function() {
   })
   .then(function(data) {
     askAnswerDiv.textContent = data.choices[0].message.content;
+    askHistory.push({ role: "user", content: askText });
+askHistory.push({ role: "assistant", content: data.choices[0].message.content });
+if (askHistory.length > 6) {
+  askHistory = askHistory.slice(-6);
+}
+
   })
   .catch(function() {
     askAnswerDiv.textContent = "Ask failed, try again.";
