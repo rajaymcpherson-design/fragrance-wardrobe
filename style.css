@@ -34,6 +34,9 @@ select {
 }
 .card {
   transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+border-left: 4px solid #d4af37;
+
 }
 
 .card:hover {
@@ -84,6 +87,7 @@ h1 {
   padding: 16px;
   border-radius: 8px;
   line-height: 1.6;
+  white-space: pre-line;
   margin: 16px 0;
 }
 
