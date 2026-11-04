@@ -229,4 +229,44 @@ imageButton.addEventListener("click", function() {
     moodDiv.textContent = "Image generation failed, text pick still works.";
   });
 });
+const askButton = document.getElementById("ask-button");
+const askAnswerDiv = document.getElementById("ask-answer");
+
+askButton.addEventListener("click", function() {
+  if (typeof API_KEY === "undefined" || API_KEY === "YOUR_API_KEY_HERE") {
+    askAnswerDiv.textContent = "AI key not set, ask needs the local key.";
+    return;
+  }
+  const askText = document.getElementById("ask").value;
+  if (askText === "") {
+    askAnswerDiv.textContent = "Type a question first, then ask Muse Spark.";
+    return;
+  }
+  askAnswerDiv.textContent = "Thinking...";
+  fetch("https://api.meta.ai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + API_KEY
+    },
+    body: JSON.stringify({
+      model: "muse-spark-1.3",
+      messages: [
+        {
+          role: "user",
+          content: "You are Fragrance Coach, powered by Meta Muse Spark. Answer this fragrance question in 2-3 sentences: " + askText
+        }
+      ]
+    })
+  })
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    askAnswerDiv.textContent = data.choices[0].message.content;
+  })
+  .catch(function() {
+    askAnswerDiv.textContent = "Ask failed, try again.";
+  });
+});
 
