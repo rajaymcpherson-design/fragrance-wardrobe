@@ -32,3 +32,26 @@ select {
   color: #555;
   margin: 12px 0;
 }
+.card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+body.dark {
+  background-color: #121212;
+  color: #f0f0f0;
+}
+
+body.dark .card {
+  background-color: #222222;
+  border-color: #444444;
+}
+
+body.dark button, body.dark select, body.dark input {
+  background-color: #222222;
+  color: #f0f0f0;
+}

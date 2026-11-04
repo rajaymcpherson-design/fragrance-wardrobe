@@ -144,4 +144,15 @@ favButton.addEventListener("click", function() {
 });
 
 showFavorites();
+const darkButton = document.getElementById("dark-toggle");
+
+if (localStorage.getItem("darkMode") === "true") {
+  document.body.classList.add("dark");
+}
+
+darkButton.addEventListener("click", function() {
+  document.body.classList.toggle("dark");
+  const isDark = document.body.classList.contains("dark");
+  localStorage.setItem("darkMode", isDark);
+});
 
