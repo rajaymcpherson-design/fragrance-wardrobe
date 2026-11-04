@@ -31,6 +31,7 @@ container.appendChild(card);
 const pickButton = document.getElementById("get-pick");
 const pickDiv = document.getElementById("pick");
 const aiDiv = document.getElementById("ai-pick");
+let currentPick = null;
 pickButton.addEventListener("click", function() {
 const chosenOccasion = document.getElementById("occasion").value;
 const chosenMood = document.getElementById("mood").value;
@@ -53,7 +54,7 @@ const weatherMatches = currentTemp === null ? matches : matches.filter(function(
   }
 });
 const pick = weatherMatches[0] || matches[0] || fragrances[2];
-
+currentPick = pick;
 pickDiv.textContent = "For " + chosenOccasion + " (" + chosenMood + "), try " + pick.name + " by " + pick.brand + " — " + pick.season + ".";
 if (typeof API_KEY === "undefined" || API_KEY === "YOUR_API_KEY_HERE") {
   aiDiv.textContent = "AI key not set, showing rules pick only.";
@@ -115,4 +116,32 @@ if (navigator.geolocation) {
 } else {
   fetchWeather(34.6, -98.4, "Lawton");
 }
+const favButton = document.getElementById("save-favorite");
+const favDiv = document.getElementById("favorites");
+
+function showFavorites() {
+  const saved = localStorage.getItem("favorites");
+  const favs = saved === null ? [] : JSON.parse(saved);
+  if (favs.length === 0) {
+    favDiv.textContent = "No favorites yet.";
+  } else {
+    favDiv.textContent = "Favorites: " + favs.join(", ");
+  }
+}
+
+favButton.addEventListener("click", function() {
+  if (currentPick === null) {
+    favDiv.textContent = "Get a pick first, then save it.";
+    return;
+  }
+  const saved = localStorage.getItem("favorites");
+  const favs = saved === null ? [] : JSON.parse(saved);
+  if (favs.indexOf(currentPick.name) === -1) {
+    favs.push(currentPick.name);
+    localStorage.setItem("favorites", JSON.stringify(favs));
+  }
+  showFavorites();
+});
+
+showFavorites();
 
