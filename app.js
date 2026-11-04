@@ -155,4 +155,51 @@ darkButton.addEventListener("click", function() {
   const isDark = document.body.classList.contains("dark");
   localStorage.setItem("darkMode", isDark);
 });
+const imageButton = document.getElementById("generate-image");
+const moodDiv = document.getElementById("mood-image");
+
+imageButton.addEventListener("click", function() {
+  if (typeof API_KEY === "undefined" || API_KEY === "YOUR_API_KEY_HERE") {
+    moodDiv.textContent = "AI key not set, image needs the local key.";
+    return;
+  }
+  if (currentPick === null) {
+    moodDiv.textContent = "Get a pick first, then generate its mood image.";
+    return;
+  }
+  moodDiv.textContent = "Generating image, please wait...";
+  const imagePrompt = "Abstract atmospheric mood image inspired by the fragrance " + currentPick.name + ", warm evening light, dark cozy atmosphere, no bottle, no logo, no text, no person.";
+  fetch("https://api.meta.ai/v1/images/generations", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + API_KEY
+    },
+    body: JSON.stringify({
+      model: "muse-image-1.0",
+      prompt: imagePrompt,
+      n: 1,
+      output_format: "png"
+    })
+  })
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    if (data.data && data.data[0] && data.data[0].b64_json) {
+      moodDiv.textContent = "";
+      const img = document.createElement("img");
+      img.src = "data:image/png;base64," + data.data[0].b64_json;
+      img.alt = "Mood image for " + currentPick.name;
+      img.style.width = "100%";
+      img.style.maxWidth = "400px";
+      moodDiv.appendChild(img);
+    } else {
+      moodDiv.textContent = "Image generation failed, text pick still works.";
+    }
+  })
+  .catch(function() {
+    moodDiv.textContent = "Image generation failed, text pick still works.";
+  });
+});
 
