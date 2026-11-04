@@ -59,6 +59,10 @@ if (API_KEY === "YOUR_API_KEY_HERE") {
   aiDiv.textContent = "AI key not set, showing rules pick only.";
 } else {
   aiDiv.textContent = "Thinking...";
+  const askText = document.getElementById("ask").value;
+const tempText = currentTemp === null ? "unknown" : currentTemp + " degrees Fahrenheit";
+const askPart = askText === "" ? "No extra question." : "User also asked: " + askText + " Answer this at the end.";
+const aiPrompt = "You are Fragrance Coach. Weather is " + tempText + ". Occasion is " + chosenOccasion + ". Mood is " + chosenMood + ". Wardrobe, pick only from these: Naxos by Xerjoff, Aventus by Creed, Imagination by Louis Vuitton, Layton by Parfums de Marly, Angels' Share by Kilian, Side Effect by Initio Parfums Prives. " + askPart + " Answer in this format: Reasoning Step 1 Weather, Step 2 Occasion and mood, Step 3 Wardrobe match. Main pick: name and why in 2-3 sentences. Layering: layer the main pick with one other fragrance from the list, why the notes work together, and spray counts in order.";
   fetch("https://api.meta.ai/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -70,7 +74,7 @@ if (API_KEY === "YOUR_API_KEY_HERE") {
       messages: [
         {
           role: "user",
-          content: "Recommend one fragrance for a date night in 57 degree weather from this list: Naxos, Aventus, Imagination, Layton, Angels' Share, Side Effect. Answer in 2-3 sentences with the name and why."
+          content: aiPrompt
         }
       ]
     })
