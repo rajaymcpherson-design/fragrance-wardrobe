@@ -30,6 +30,7 @@ container.appendChild(card);
 });
 const pickButton = document.getElementById("get-pick");
 const pickDiv = document.getElementById("pick");
+const aiDiv = document.getElementById("ai-pick");
 pickButton.addEventListener("click", function() {
 const chosenOccasion = document.getElementById("occasion").value;
 const chosenMood = document.getElementById("mood").value;
@@ -54,6 +55,36 @@ const weatherMatches = currentTemp === null ? matches : matches.filter(function(
 const pick = weatherMatches[0] || matches[0] || fragrances[2];
 
 pickDiv.textContent = "For " + chosenOccasion + " (" + chosenMood + "), try " + pick.name + " by " + pick.brand + " — " + pick.season + ".";
+if (API_KEY === "YOUR_API_KEY_HERE") {
+  aiDiv.textContent = "AI key not set, showing rules pick only.";
+} else {
+  aiDiv.textContent = "Thinking...";
+  fetch("https://api.meta.ai/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + API_KEY
+    },
+    body: JSON.stringify({
+      model: "muse-spark-1.3",
+      messages: [
+        {
+          role: "user",
+          content: "Recommend one fragrance for a date night in 57 degree weather from this list: Naxos, Aventus, Imagination, Layton, Angels' Share, Side Effect. Answer in 2-3 sentences with the name and why."
+        }
+      ]
+    })
+  })
+  .then(function(response) {
+    return response.json();
+  })
+  .then(function(data) {
+    aiDiv.textContent = data.choices[0].message.content;
+  })
+  .catch(function() {
+    aiDiv.textContent = "AI call failed, rules pick above still works.";
+  });
+}
 });
 console.log("app.js is connected");
 const weatherDiv = document.getElementById("weather");
