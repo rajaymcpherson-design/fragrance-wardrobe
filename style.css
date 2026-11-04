@@ -244,3 +244,8 @@ input {
   color: #111111;
   background-color: #ffffff;
 }
+h2 {
+  text-align: center;
+  color: #d4af37;
+  margin: 30px 0 16px 0;
+}
